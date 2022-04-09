@@ -23,7 +23,7 @@ func _ready():
 	nameplate.characterName = "Besca"
 
 
-func get_input():
+func _get_input():
 	# ground movement
 	var direction = Vector3()
 	if Input.is_action_pressed("ui_up"):
@@ -46,7 +46,9 @@ func get_input():
 
 
 func _physics_process(delta):
-	get_input()
+	_get_distance_traveled()
+	_set_position_data()
+	_get_input()
 	
 	# friction
 	if is_on_floor():
@@ -59,8 +61,10 @@ func _physics_process(delta):
 	# keep player on floor
 	velocity.y -= PlayerData.FALL_ACCELERATION * delta
 	velocity = move_and_slide(velocity, Vector3.UP)
-	
-	_get_distance_traveled()
+
+
+func _set_position_data():
+	PlayerData.position = currentPosition
 
 
 func _get_distance_traveled():

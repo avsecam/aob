@@ -1,13 +1,15 @@
 extends Node
 
 
-const WALK_SPEED = 5
-const FALL_ACCELERATION = 75
-const JUMP_IMPULSE = 25
-const FRICTION = 0.2
+const WALK_SPEED: float = 5.0
+const FALL_ACCELERATION: float = 75.0
+const JUMP_IMPULSE: float = 25.0
+const FRICTION: float = 0.2
 
-var location # which level/stage
-var position # which x,y,z coordinate
-var rotation
+var location: String  # which level/stage
+var position: Vector3 # which x,y,z coordinate
+var rotation: Vector3
 
 var activeCharacter
+
+var inBattle: bool = false

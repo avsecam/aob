@@ -5,6 +5,7 @@ onready var world = $World
 
 
 func _ready():
+	PlayerData.location = world.filename
 	_set_world_collisions()
 
 

@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Bedroom.glb-e3772ca8e7b69e8ad30ced02ca048cf7.scn"
+path="res://.import/Bedroom.glb-86a3aa2dfb04d596eb9438d25d465862.scn"
 
 [deps]
 
-source_file="res://Assets/Overworld/Levels/Bedroom.glb"
-dest_files=[ "res://.import/Bedroom.glb-e3772ca8e7b69e8ad30ced02ca048cf7.scn" ]
+source_file="res://Assets/Overworld/Levels/Bedroom/Bedroom.glb"
+dest_files=[ "res://.import/Bedroom.glb-86a3aa2dfb04d596eb9438d25d465862.scn" ]
 
 [params]
 
