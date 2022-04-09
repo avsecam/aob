@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Character/Player.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Utility/Billboard.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CylinderShape" id=1]
+height = 4.0
+
+[sub_resource type="CylinderMesh" id=2]
+height = 4.0
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.133333, 0.403922, 0.6, 1 )
+
+[node name="Player" type="KinematicBody"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+collision_mask = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Nameplate" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.89785, 0 )
+guiPath = "res://Scenes/Utility/Nameplate.tscn"
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.65776, 0 )
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.62475, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 19.799 )
+current = true
+fov = 50.0

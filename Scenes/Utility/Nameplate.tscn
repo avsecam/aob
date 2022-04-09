@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Utility/Nameplate.gd" type="Script" id=1]
+[ext_resource path="res://Assets/TitleFont.tres" type="DynamicFont" id=2]
+
+[node name="Nameplate" type="Control"]
+modulate = Color( 0.607843, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1130.0
+margin_bottom = -690.0
+rect_min_size = Vector2( 150, 30 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

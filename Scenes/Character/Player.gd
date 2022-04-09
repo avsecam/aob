@@ -1,0 +1,74 @@
+extends KinematicBody
+
+
+signal step()
+
+var distanceTraveled = 0 # should reset to 0 when it reaches EncounterHandler.STEP_SIZE
+var currentPosition
+var lastPosition
+
+var velocity = Vector3()
+
+onready var nameplate = $Nameplate/Viewport.get_child(0)
+
+func _ready():
+	$Camera.look_at(translation, Vector3.UP)
+	
+	currentPosition = translation
+	lastPosition = translation
+	
+	connect("step", EncounterHandler, "_increment_step")
+	
+	# set nameplate
+	nameplate.characterName = "Besca"
+
+
+func get_input():
+	# ground movement
+	var direction = Vector3()
+	if Input.is_action_pressed("ui_up"):
+		direction += Vector3(-1, 0, -1).normalized()
+	if Input.is_action_pressed("ui_down"):
+		direction += Vector3(1, 0, 1).normalized()
+	if Input.is_action_pressed("ui_left"):
+		direction += Vector3(-1, 0, 1).normalized()
+	if Input.is_action_pressed("ui_right"):
+		direction += Vector3(1, 0, -1).normalized()
+	
+	if Input.is_action_pressed("sprint"):
+		velocity += direction * (PlayerData.WALK_SPEED + 4)
+	else:
+		velocity += direction * (PlayerData.WALK_SPEED)
+	
+	# jump
+	if is_on_floor() and Input.is_action_just_pressed("ui_accept"):
+		velocity.y += PlayerData.JUMP_IMPULSE
+
+
+func _physics_process(delta):
+	get_input()
+	
+	# friction
+	if is_on_floor():
+		velocity.x = lerp(velocity.x, 0, PlayerData.FRICTION)
+		velocity.z = lerp(velocity.z, 0, PlayerData.FRICTION)
+	else:
+		velocity.x = lerp(velocity.x, 0, PlayerData.FRICTION + 0.1)
+		velocity.z = lerp(velocity.z, 0, PlayerData.FRICTION + 0.1)
+	
+	# keep player on floor
+	velocity.y -= PlayerData.FALL_ACCELERATION * delta
+	velocity = move_and_slide(velocity, Vector3.UP)
+	
+	_get_distance_traveled()
+
+
+func _get_distance_traveled():
+	lastPosition = currentPosition
+	currentPosition = translation
+	
+	distanceTraveled += sqrt(pow(currentPosition.x - lastPosition.x, 2)) + pow(currentPosition.z - lastPosition.z, 2)
+	
+	if distanceTraveled >= EncounterHandler.STEP_SIZE:
+		distanceTraveled = 0
+		emit_signal("step")
