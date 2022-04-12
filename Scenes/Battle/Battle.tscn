@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/Battle/Battle.gd" type="Script" id=1]
 
@@ -7,26 +7,6 @@ extents = Vector3( 30, 1, 30 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 60, 2, 60 )
-
-[sub_resource type="CylinderShape" id=3]
-height = 10.0
-
-[sub_resource type="SpatialMaterial" id=4]
-albedo_color = Color( 0.160784, 0.494118, 0.623529, 1 )
-
-[sub_resource type="CylinderMesh" id=5]
-material = SubResource( 4 )
-top_radius = 2.0
-bottom_radius = 0.5
-height = 10.0
-
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.984314, 0.0627451, 0.0627451, 1 )
-
-[sub_resource type="CylinderMesh" id=7]
-material = SubResource( 6 )
-bottom_radius = 3.0
-height = 10.0
 
 [node name="Battle" type="Spatial"]
 script = ExtResource( 1 )
@@ -49,29 +29,35 @@ shape = SubResource( 1 )
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="PlayerPosition" type="Position3D" parent="."]
+[node name="Heroes" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.3045, 0, -0.122766 )
 
-[node name="Hero1" type="StaticBody" parent="PlayerPosition"]
+[node name="Hero1" type="Position3D" parent="Heroes"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7361, 0, 2.09251 )
 
-[node name="CollisionShape" type="CollisionShape" parent="PlayerPosition/Hero1"]
-shape = SubResource( 3 )
+[node name="Hero2" type="Position3D" parent="Heroes"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6087, 0, -7.15624 )
 
-[node name="MeshInstance" type="MeshInstance" parent="PlayerPosition/Hero1/CollisionShape"]
-mesh = SubResource( 5 )
-material/0 = null
+[node name="Hero3" type="Position3D" parent="Heroes"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.48861, 0, -5.54119 )
 
-[node name="EnemyPosition" type="Position3D" parent="."]
+[node name="Hero4" type="Position3D" parent="Heroes"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.661413, -1.90735e-06, -15.1953 )
+
+[node name="Enemies" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179176, -1.90735e-06, 9.27264 )
 
-[node name="Foe1" type="StaticBody" parent="EnemyPosition"]
+[node name="Enemy1" type="Position3D" parent="Enemies"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.643766, -1.90735e-06, -1.25651 )
 
-[node name="CollisionShape" type="CollisionShape" parent="EnemyPosition/Foe1"]
-shape = SubResource( 3 )
+[node name="Enemy2" type="Position3D" parent="Enemies"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.389, 0, 9.6223 )
 
-[node name="MeshInstance" type="MeshInstance" parent="EnemyPosition/Foe1/CollisionShape"]
-mesh = SubResource( 7 )
-material/0 = null
+[node name="Enemy3" type="Position3D" parent="Enemies"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8922, 1.90735e-06, -1.25014 )
+
+[node name="Enemy4" type="Position3D" parent="Enemies"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.761061, 0, 8.86215 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.707107, -0.455228, 0.54108, 0, 0.765202, 0.64379, -0.707107, -0.455228, 0.54108, 16, 12.2312, 16 )
+transform = Transform( 0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573577, -0.707107, -0.40558, 0.579228, 16.59, 17, 16.48 )

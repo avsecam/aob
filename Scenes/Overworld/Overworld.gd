@@ -1,7 +1,7 @@
 extends Spatial
 
 
-onready var world = $World
+onready var world: Spatial = $World
 
 
 func _ready():

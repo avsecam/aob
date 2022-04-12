@@ -1,8 +1,8 @@
 extends Control
 
 
-export (String) var characterName
-onready var label = $Label
+export var characterName: String
+onready var label: Label = $Label
 
 
 func _physics_process(_delta):

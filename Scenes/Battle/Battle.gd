@@ -1,8 +1,33 @@
 extends Spatial
 
 
+onready var heroPositions: Array = $Heroes.get_children()
+onready var enemyPositions: Array = $Enemies.get_children()
+
+
 func _ready():
 	PlayerData.inBattle = true
+	_add_participants()
+
+
+func _add_participants():
+	var combatCharacter: Spatial
+	var heroes: Array = PlayerData.activeHeroes
+	var enemies: Array = EncounterHandler.enemies
+	var i: int = 0
+	while i < heroes.size():
+		combatCharacter = load("res://Scenes/Character/CombatCharacter.tscn").instance()
+		combatCharacter.characterInfo = heroes[i]
+		combatCharacter.isHero = true
+		heroPositions[i].add_child(combatCharacter)
+		i += 1
+	
+	i = 0
+	while i < enemies.size():
+		combatCharacter = load("res://Scenes/Character/CombatCharacter.tscn").instance()
+		combatCharacter.characterInfo = enemies[i]
+		enemyPositions[i].add_child(combatCharacter)
+		i += 1
 
 
 func _get_input():

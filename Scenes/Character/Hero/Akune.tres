@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+characterName = "Akune"
+level = 1
+maxHealth = 400
+maxResource = 30
+attackPhys = 30
+attackElem = 15
+defensePhys = 15
+defenseElem = 25
+resilience = 15
+speed = 30
+critMultiplier = 1.5
+critChance = 0.5

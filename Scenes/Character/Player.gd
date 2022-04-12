@@ -3,29 +3,26 @@ extends KinematicBody
 
 signal step()
 
-var distanceTraveled = 0 # should reset to 0 when it reaches EncounterHandler.STEP_SIZE
-var currentPosition
-var lastPosition
+var distanceTraveled: float = 0 # should reset to 0 when it reaches EncounterHandler.STEP_SIZE
+var currentPosition: Vector3
+var lastPosition: Vector3
 
-var velocity = Vector3()
+var velocity: Vector3 = Vector3()
 
-onready var nameplate = $Nameplate/Viewport.get_child(0)
 
 func _ready():
 	$Camera.look_at(translation, Vector3.UP)
 	
 	currentPosition = translation
 	lastPosition = translation
+	_set_leader_hero()
 	
 	connect("step", EncounterHandler, "_increment_step")
-	
-	# set nameplate
-	nameplate.characterName = "Besca"
 
 
 func _get_input():
 	# ground movement
-	var direction = Vector3()
+	var direction: Vector3 = Vector3()
 	if Input.is_action_pressed("ui_up"):
 		direction += Vector3(-1, 0, -1).normalized()
 	if Input.is_action_pressed("ui_down"):
@@ -76,3 +73,16 @@ func _get_distance_traveled():
 	if distanceTraveled >= EncounterHandler.STEP_SIZE:
 		distanceTraveled = 0
 		emit_signal("step")
+
+
+func _set_leader_hero():
+	var leaderHero: Spatial = load("%s%s.tscn" % [GameData.heroFolderPath, PlayerData.leaderHero.characterName]).instance()
+	add_child(leaderHero)
+
+
+
+
+
+
+
+
