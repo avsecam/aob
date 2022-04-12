@@ -12,7 +12,11 @@ const MIN_STEPS_TIL_ENCOUNTER: int = 50
 const MAX_STEPS_TIL_ENCOUNTER: int = 100
 
 # sample array of heroes and enemies
-var enemies: Array = ["Slime", "Large Rat", "Aria", "Quorralis"]
+var enemies: Array = [
+	"res://Scenes/Character/Enemy/Large Rat.tres",
+	"res://Scenes/Character/Enemy/Slime.tres",
+	"res://Scenes/Character/Enemy/Quorralis.tres"
+]
 
 
 func _ready():

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+characterName = "Large Rat"
+level = 1
+maxHealth = 200
+maxResource = 10
+attackPhys = 20
+attackElem = 5
+defensePhys = 15
+defenseElem = 15
+resilience = 10
+speed = 30
+critMultiplier = 1.2
+critChance = 0.5

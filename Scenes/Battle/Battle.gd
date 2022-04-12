@@ -14,6 +14,7 @@ func _add_participants():
 	var combatCharacter: Spatial
 	var heroes: Array = PlayerData.activeHeroes
 	var enemies: Array = EncounterHandler.enemies
+	var newEnemy: CharacterStats
 	var i: int = 0
 	while i < heroes.size():
 		combatCharacter = load("res://Scenes/Character/CombatCharacter.tscn").instance()
@@ -25,7 +26,9 @@ func _add_participants():
 	i = 0
 	while i < enemies.size():
 		combatCharacter = load("res://Scenes/Character/CombatCharacter.tscn").instance()
-		combatCharacter.characterInfo = enemies[i]
+		newEnemy = load(enemies[i])
+		newEnemy.ready()
+		combatCharacter.characterInfo = newEnemy
 		enemyPositions[i].add_child(combatCharacter)
 		i += 1
 

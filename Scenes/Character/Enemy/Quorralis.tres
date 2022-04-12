@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+characterName = "Quorralis"
+level = 1
+maxHealth = 300
+maxResource = 50
+attackPhys = 20
+attackElem = 35
+defensePhys = 20
+defenseElem = 35
+resilience = 15
+speed = 35
+critMultiplier = 1.6
+critChance = 0.2

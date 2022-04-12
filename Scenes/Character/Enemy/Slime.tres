@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+characterName = "Slime"
+level = 1
+maxHealth = 150
+maxResource = 10
+attackPhys = 10
+attackElem = 10
+defensePhys = 10
+defenseElem = 10
+resilience = 5
+speed = 20
+critMultiplier = 1.2
+critChance = 0.2
