@@ -22,27 +22,34 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Container"]
 margin_right = 300.0
-margin_bottom = 20.0
+margin_bottom = 14.0
 text = "Character Name"
 align = 1
 valign = 1
 
-[node name="Button" type="Button" parent="Container"]
-margin_top = 23.0
-margin_right = 300.0
-margin_bottom = 38.0
-text = "Attack"
-
-[node name="Button2" type="Button" parent="Container"]
-margin_top = 47.0
-margin_right = 300.0
-margin_bottom = 62.0
-text = "Defend"
-
-[node name="Button3" type="Button" parent="Container"]
-margin_top = 71.0
+[node name="Buttons" type="VBoxContainer" parent="Container"]
+margin_top = 18.0
 margin_right = 300.0
 margin_bottom = 86.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Button" type="Button" parent="Container/Buttons"]
+margin_right = 300.0
+margin_bottom = 20.0
+text = "Attack"
+
+[node name="Button2" type="Button" parent="Container/Buttons"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 44.0
+text = "Defend"
+
+[node name="Button3" type="Button" parent="Container/Buttons"]
+margin_top = 48.0
+margin_right = 300.0
+margin_bottom = 68.0
 text = "Flee"
 
 [node name="ColorRect" type="ColorRect" parent="."]

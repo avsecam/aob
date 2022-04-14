@@ -25,5 +25,4 @@ script = ExtResource( 9 )
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 3, 0 )
 billboard = 2
 frames = SubResource( 1 )
-frame = 4
 playing = true

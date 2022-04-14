@@ -1,8 +1,8 @@
 extends Spatial
-class_name CombatCharacter
+
 
 signal attack(target, damage)
-signal damaged(damage)
+signal damaged()
 
 onready var combatInfo: VBoxContainer = $Billboard/Viewport/CombatInfo/Container/VBoxContainer
 onready var characterName: Label = combatInfo.get_node("Label")
@@ -19,8 +19,8 @@ func _ready():
 	characterName.text = characterInfo.characterName
 	healthBar.max_value = characterInfo.maxHealth
 	resourceBar.max_value = characterInfo.maxResource
-	_update_health()
-	_update_resource()
+	_update_health_bar()
+	_update_resource_bar()
 	
 	# set the character scene to be shown
 	if isHero:
@@ -30,20 +30,23 @@ func _ready():
 	character = get_child(1)
 
 
-func _update_health():
+func _update_health_bar():
 	healthBar.value = characterInfo.currentHealth
 	healthBar.get_node("Label").text = "%d / %d" % [characterInfo.currentHealth, characterInfo.maxHealth]
-func _update_resource():
+func _update_resource_bar():
 	resourceBar.value = characterInfo.currentResource
 	resourceBar.get_node("Label").text = "%d / %d" % [characterInfo.currentResource, characterInfo.maxResource]
 
 
-func attack(target: CombatCharacter):
+func _attack(target: Spatial):
 	connect("attack", target, "_on_damaged")
 	emit_signal("attack", characterInfo.attackPhys)
 	disconnect("attack", target, "_on_damaged")
 
 
 func _on_damaged(damage):
+	emit_signal("damaged")
+	if characterInfo.currentHealth - damage <= 0:
+		queue_free()
 	characterInfo.currentHealth -= damage
-	_update_health()
+	_update_health_bar()

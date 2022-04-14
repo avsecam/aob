@@ -1,7 +1,7 @@
 extends Control
 
 
-onready var buttons: Array = $Container.get_children()
+onready var buttons: Array = $Container/Buttons.get_children()
 onready var label: Label = $Container/Label
 
 
