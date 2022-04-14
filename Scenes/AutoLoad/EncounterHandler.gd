@@ -8,8 +8,8 @@ var battleScene: Resource = preload("res://Scenes/Battle/Battle.tscn")
 const STEP_SIZE: float = 1.0
 var steps: int = 0 # counts the steps made by player
 var stepsTilEncounter: int = 0 # will be set to some number between MIN_STEPS_TIL_ENCOUNTER and MAX_STEPS_TIL_ENCOUNTER
-const MIN_STEPS_TIL_ENCOUNTER: int = 50
-const MAX_STEPS_TIL_ENCOUNTER: int = 100
+const MIN_STEPS_TIL_ENCOUNTER: int = 50 - 40
+const MAX_STEPS_TIL_ENCOUNTER: int = 100 - 60
 
 # sample array of heroes and enemies
 var enemies: Array = [

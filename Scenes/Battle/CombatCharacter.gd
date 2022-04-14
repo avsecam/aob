@@ -12,7 +12,7 @@ onready var resourceBar: ProgressBar = combatInfo.get_node("Resource")
 var character: Spatial # Hero or Enemy node
 var characterInfo: CharacterStats
 var isHero: bool = false
-
+var isSelected: bool = false
 
 func _ready():
 	# set the combat info
@@ -28,6 +28,13 @@ func _ready():
 	else:
 		add_child(load(GameData.enemyScenePath).instance()) # make this dynamic when enemy tscn's are added
 	character = get_child(1)
+
+
+func _physics_process(_delta):
+	if isSelected:
+		character.sprite.modulate = Color(1, 0, 1, 1)
+	else:
+		character.sprite.modulate = Color(1, 1, 1, 1)
 
 
 func _update_health_bar():

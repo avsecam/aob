@@ -8,8 +8,10 @@ onready var turnNumber: Label = $TurnNumber
 onready var combatOptions: Control = $CombatGUI/HBoxContainer/CombatOptions
 
 var turns: int = -1 # Number of turns cycled through
-var turnOrder: Array
+var turnOrder: Array = []
 
+var inTargetSelect: bool = false
+var targets: Array = [] # Array of positions
 
 func _ready():
 	PlayerData.inBattle = true
@@ -19,7 +21,23 @@ func _ready():
 	_set_combat_options()
 	_set_signals()
 	
-	combatOptions.buttons[1].connect("pressed", heroPositions[0].get_child(0), "_attack", [enemyPositions[0].get_child(0)])
+	combatOptions.buttons[0].connect("pressed", self, "_target_select")
+
+
+func _target_select():
+	combatOptions.buttons[0].release_focus()
+	targets.append(enemyPositions[0])
+	_refresh_target_selection()
+	inTargetSelect = true
+
+
+func _refresh_target_selection():
+	if inTargetSelect:
+		targets.remove(0)
+	for enemy in enemyPositions:
+		enemy.get_child(0).isSelected = false
+	for target in targets:
+		target.get_child(0).isSelected = true
 
 
 func _add_participants():
@@ -62,7 +80,7 @@ func _set_turn_order():
 	turnOrder = []
 	for character in heroPositions + enemyPositions:
 		turnOrder.append(character)
-	turnOrder.sort_custom(SortBySpeed, "_sort_speed")
+#	turnOrder.sort_custom(SortBySpeed, "_sort_speed")
 
 
 # Next character in current turn queue
@@ -77,7 +95,7 @@ func _set_combat_options():
 	if currentCharacter.get_parent().name == "Heroes":
 		combatOptions.visible = true
 		combatOptions.label.text = currentCharacter.get_child(0).characterInfo.characterName
-		combatOptions.get_node("Container").get_child(1).grab_focus()
+		combatOptions.buttons[0].grab_focus()
 	else:
 		combatOptions.visible = false
 
@@ -88,8 +106,25 @@ func _set_signals():
 
 
 func _get_input():
-	if Input.is_action_just_pressed("ui_cancel"):
-		_exit_battle()
+#	if Input.is_action_just_pressed("ui_cancel"):
+#		_exit_battle()
+	
+	if inTargetSelect:
+		var targetIndex: int = targets[0].get_index()
+		if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up"):
+			targets.append(enemyPositions[targetIndex - 1])
+			_refresh_target_selection()
+		elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_down"):
+			if targetIndex >= enemyPositions.size() - 1:
+				targets.append(enemyPositions[0])
+			else:
+				targets.append(enemyPositions[targetIndex + 1])
+			_refresh_target_selection()
+		elif Input.is_action_just_pressed("ui_cancel"):
+			inTargetSelect = false
+			targets = []
+			_refresh_target_selection()
+			_set_combat_options()
 
 
 func _physics_process(_delta):
