@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Battle/CombatOptions.gd" type="Script" id=1]
+
+[node name="CombatOptions" type="Control"]
+anchor_right = 0.234
+anchor_bottom = 0.139
+margin_right = 0.47998
+margin_bottom = -0.0800095
+rect_min_size = Vector2( 300, 0 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="Container"]
+margin_right = 300.0
+margin_bottom = 20.0
+text = "Character Name"
+align = 1
+valign = 1
+
+[node name="Button" type="Button" parent="Container"]
+margin_top = 23.0
+margin_right = 300.0
+margin_bottom = 38.0
+text = "Attack"
+
+[node name="Button2" type="Button" parent="Container"]
+margin_top = 47.0
+margin_right = 300.0
+margin_bottom = 62.0
+text = "Defend"
+
+[node name="Button3" type="Button" parent="Container"]
+margin_top = 71.0
+margin_right = 300.0
+margin_bottom = 86.0
+text = "Flee"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0745098, 0.729412, 0.686275, 0.360784 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,29 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder8.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder4.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder1.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder7.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder5.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder3.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Character/Placeholder/Placeholder6.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/Character/Character.gd" type="Script" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Character" type="Spatial"]
+script = ExtResource( 9 )
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 3, 0 )
+billboard = 2
+frames = SubResource( 1 )
+frame = 4
+playing = true

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Utility/Billboard.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Character/CombatCharacter.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Battle/CombatCharacter.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Battle/CombatInfo.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ViewportTexture" id=1]

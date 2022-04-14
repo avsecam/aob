@@ -13,3 +13,7 @@ animations = [ {
 
 [node name="Eo" instance=ExtResource( 1 )]
 spriteFrames = SubResource( 1 )
+
+[node name="Sprite" parent="." index="0"]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 4, 0 )
+frame = 0

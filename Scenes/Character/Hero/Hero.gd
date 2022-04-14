@@ -1,10 +1,2 @@
-extends Spatial
+extends "res://Scenes/Character/Character.gd"
 
-
-onready var sprite: AnimatedSprite3D = $Sprite
-
-export var spriteFrames: SpriteFrames
-
-
-func _ready():
-	sprite.frames = spriteFrames if spriteFrames != null else sprite.frames
