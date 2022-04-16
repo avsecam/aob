@@ -2,12 +2,13 @@ extends Node
 class_name Magics
 
 
-enum Target {SINGLE, GROUP, ALL}
-enum DamageType {PHYSICAL, ELEMENTAL}
+var fireball: Dictionary = {
+	"targetType": GameData.TargetType.SINGLE,
+	"damageType": GameData.DamageType.FIRE,
+	"damageMultiplier": 1
+}
 
-
-static func fireball(stats: CharacterStats) -> Dictionary:
-	var target = Target.SINGLE
-	var type = DamageType.ELEMENTAL
-	var damage = stats.attackElem
-	return {target: target, type: type, damage: damage}
+var magics: Dictionary = {
+	# offensive
+	"fireball": fireball
+}

@@ -49,37 +49,46 @@ func _update_resource_bar():
 	resourceBar.get_node("Label").text = "%d / %d" % [characterStats.currentResource, characterStats.maxResource]
 
 
-func attack(target: Spatial):
+func attack():
+	print("%s is attacking..." % characterStats.characterName)
 	var damageInfo: Dictionary = {
-		"damage": characterStats.attackPhys,
-		"type": "Physical"
+		"source": character,
+		"targetType": GameData.TargetType.SINGLE,
+		"damageType": GameData.DamageType.PHYSICAL,
+		"damage": characterStats.attackPhys
 	}
-	connect("attack", target, "_on_damaged_physical")
 	emit_signal("attack", damageInfo)
-	disconnect("attack", target, "_on_damaged_physical")
 
 
-func magic(target: Spatial):
+func magic(spell: String):
+	var damageInfoRaw: Dictionary = Magic.magics[spell.to_lower()]
+	var damageInfo: Dictionary = {
+		"source": character,
+		"targetType": damageInfoRaw["targetType"],
+		"damageType": damageInfoRaw["damageType"],
+		"damage": characterStats.attackPhys *  damageInfoRaw["damageMultiplier"]
+	}
+
+
+func technique():
+	pass
+func item():
 	pass
 
 
-func _on_damaged_physical(damageInfo: Dictionary):
-	var finalDamage: int = damageInfo["damage"] - (characterStats.defensePhys * 0.5)
+func affect(damageInfo: Dictionary):
+	# check if physical or elemental damage
+	var finalDamage: int
+	if damageInfo["damageType"] == GameData.DamageType.PHYSICAL:
+		finalDamage = damageInfo["damage"] - (characterStats.defensePhys * 0.5)
+	else:
+		finalDamage = damageInfo["damage"] - (characterStats.defenseElem * 0.5)
+	
 	emit_signal("damaged")
 	if characterStats.currentHealth - finalDamage <= 0:
 		get_parent().visible = false
 		queue_free()
 		emit_signal("downed")
 	characterStats.currentHealth -= finalDamage
-	_update_health_bar()
-
-
-func _on_damaged_elemental(damageInfo: Dictionary):
-	var finalDamage: int = damageInfo["damage"] - (characterStats.defensePhys * 0.5)
-	emit_signal("damaged")
-	if characterStats.currentHealth - finalDamage <= 0:
-		get_parent().visible = false
-		queue_free()
-		emit_signal("downed")
-	characterStats.currentHealth -= finalDamage
+	print("%s dealt %s damage to %s!" % [damageInfo["source"].name, finalDamage, characterStats.characterName])
 	_update_health_bar()

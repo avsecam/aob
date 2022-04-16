@@ -53,6 +53,7 @@ config/icon="res://icon.png"
 GameData="*res://Scenes/AutoLoad/GameData.gd"
 PlayerData="*res://Scenes/AutoLoad/PlayerData.gd"
 EncounterHandler="*res://Scenes/AutoLoad/EncounterHandler.gd"
+Magic="*res://Scenes/Magic/Magic.gd"
 
 [display]
 

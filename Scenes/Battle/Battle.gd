@@ -1,8 +1,6 @@
 extends Spatial
 
 
-enum ActionType {ATTACK, MAGIC, TECHNIQUE, ITEM}
-
 onready var heroPositions: Array = $Heroes.get_children()
 onready var enemyPositions: Array = $Enemies.get_children()
 onready var gui: Control = $CombatGUI
@@ -13,8 +11,7 @@ var turns: int = -1 # Number of turns cycled through
 var turnOrder: Array = []
 var currentCharacter: Position3D
 
-var action: int
-
+var actionInfo: Dictionary
 var inTargetSelect: bool = false
 var targets: Array = [] # Array of positions
 
@@ -25,11 +22,15 @@ func _ready():
 	_add_participants()
 	_set_turn_order()
 	_set_combat_options()
-	_set_signals()
+	_set_character_signals()
+	
+	combatOptions.connect("subContainerReadied", self, "_set_suboptions_signals")
+	_set_options_signals()
+	_set_suboptions_signals()
 
 
-func _enter_target_select(actionType: int):
-	action = actionType
+func _enter_target_select(info: Dictionary):
+	actionInfo = info
 	combatOptions.attackButton.release_focus()
 	targets.append(enemyPositions[0])
 	_refresh_target_selection()
@@ -50,6 +51,10 @@ func _refresh_target_selection():
 		enemy.get_child(0).isSelected = false
 	for target in targets:
 		target.get_child(0).isSelected = true
+
+
+func _confirm_action(target: Spatial):
+	target.get_child(0).affect(actionInfo)
 
 
 func _add_participants():
@@ -101,11 +106,13 @@ func _set_turn_order():
 
 # Next character in current turn queue
 func _next_turn():
+	_unset_options_signals()
 	turnOrder.remove(0)
 	if turnOrder == []:
 		_set_turn_order()
 		return
 	currentCharacter = turnOrder[0]
+	_set_options_signals()
 	_set_combat_options()
 
 
@@ -122,20 +129,45 @@ func _set_combat_options():
 		combatOptions.visible = false
 
 
-func _set_signals():
-	combatOptions.attackButton.connect("pressed", self, "_enter_target_select", [ActionType.ATTACK])
-	combatOptions.magicButton
-	combatOptions.techniqueButton
-	combatOptions.defendButton
-	combatOptions.fleeButton.connect("pressed", self, "_exit_battle")
-	
+func _set_character_signals():
 	for character in heroPositions + enemyPositions:
 		character.get_child(0).connect("damaged", self, "_next_turn")
 	
+	# basically, if downed, remove from the battle
+	# change this behavior in the future
 	for hero in heroPositions:
 		hero.get_child(0).connect("downed", self, "_refresh_heroPositions")
 	for enemy in enemyPositions:
 		enemy.get_child(0).connect("downed", self, "_refresh_enemyPositions")
+
+
+# set/unset signals for ATTACK, DEFEND, FLEE
+func _set_options_signals():
+	combatOptions.attackButton.connect("pressed", currentCharacter.get_child(0), "attack")
+	combatOptions.defendButton
+	combatOptions.fleeButton.connect("pressed", self, "_exit_battle")
+	
+	currentCharacter.get_child(0).connect("attack", self, "_enter_target_select")
+func _unset_options_signals():
+	combatOptions.attackButton.disconnect("pressed", currentCharacter.get_child(0), "attack")
+	combatOptions.defendButton
+	combatOptions.fleeButton.disconnect("pressed", self, "_exit_battle")
+	
+	currentCharacter.get_child(0).disconnect("attack", self, "_enter_target_select")
+
+
+# set signals for MAGICS and TECHNIQUES
+func _set_suboptions_signals():
+	var character = currentCharacter.get_child(0)
+	if combatOptions.currentSubContainer == combatOptions.magicButton:
+		for button in combatOptions.subContainerButtons:
+			button.connect("pressed", character, "magic", [button.text.to_lower()])
+	elif combatOptions.currentSubContainer == combatOptions.techniqueButton:
+		for button in combatOptions.subContainerButtons:
+			button.connect("pressed", character, "technique", [button.text.to_lower()])
+	elif combatOptions.currentSubContainer == combatOptions.itemButton:
+		for button in combatOptions.subContainerButtons:
+			button.connect("pressed", character, "item", [button.text.to_lower()])
 
 
 func _refresh_heroPositions():
@@ -170,7 +202,7 @@ func _get_input():
 		# Confirming target
 		elif Input.is_action_just_pressed("ui_accept"):
 			for target in targets:
-				currentCharacter.get_child(0).attack(target.get_child(0))
+				_confirm_action(target)
 			_exit_target_select()
 			
 		# Cancel

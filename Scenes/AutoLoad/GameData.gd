@@ -1,5 +1,9 @@
 extends Node
 
+enum TargetType {SINGLE, GROUP, ALL}
+enum DamageType {PHYSICAL, 
+	FIRE, WATER, GRASS, ELECTRIC, WIND, LIGHT, DARK, TEMPORA
+}
 
 onready var main: Node = get_node("/root/Main")
 onready var player: KinematicBody = main.get_node("Overworld/Player")

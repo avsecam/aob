@@ -2,6 +2,8 @@ extends Control
 class_name CombatOptions
 
 
+signal subContainerReadied()
+
 enum Buttons {ATTACK, MAGIC, TECHNIQUE, ITEM, DEFEND, FLEE}
 
 onready var mainButtons: Array = $Container/Buttons.get_children()
@@ -47,6 +49,7 @@ func _ready_sub_container(array: Array):
 		
 		# To make the bg scale with the number of buttons
 		subContainer.get_node("ColorRect").rect_size.y = array.size() * 24 - 4
+	emit_signal("subContainerReadied")
 	subContainer.visible = true
 
 
