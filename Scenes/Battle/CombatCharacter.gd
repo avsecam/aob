@@ -6,10 +6,10 @@ signal attack(damage)
 signal damaged()
 signal downed()
 
-onready var combatInfo: VBoxContainer = $Billboard/Viewport/CombatInfo/Container/VBoxContainer
-onready var characterName: Label = combatInfo.get_node("Label")
-onready var healthBar: ProgressBar = combatInfo.get_node("Health")
-onready var resourceBar: ProgressBar = combatInfo.get_node("Resource")
+onready var combatInfo: Control = $Billboard/Viewport/CombatInfo
+onready var characterName: Label = combatInfo.get_node("Container/VBoxContainer/Label")
+onready var healthBar: ProgressBar = combatInfo.get_node("Container/VBoxContainer/Health")
+onready var resourceBar: ProgressBar = combatInfo.get_node("Container/VBoxContainer/Resource")
 
 var character: Spatial # Hero or Enemy node
 var characterStats: CharacterStats
@@ -34,8 +34,10 @@ func _ready():
 
 func _physics_process(_delta):
 	if isSelected:
+		combatInfo.modulate = Color(1, 1, 0, 1)
 		character.sprite.modulate = Color(1, 0, 1, 1)
 	else:
+		combatInfo.modulate = Color(1, 1, 1, 1)
 		character.sprite.modulate = Color(1, 1, 1, 1)
 
 
@@ -59,7 +61,6 @@ func attack(target: Spatial):
 
 func magic(target: Spatial):
 	pass
-	
 
 
 func _on_damaged_physical(damageInfo: Dictionary):

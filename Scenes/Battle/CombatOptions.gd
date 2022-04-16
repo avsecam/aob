@@ -19,15 +19,11 @@ onready var label: Label = $Container/Label
 
 var currentSubContainer: Button
 
-var magics: Array = [
-	"Combust", "Spark", "Razor Leaf"
-]
-var techniques: Array = [
-	"Poach", "Bonebreaker"
-]
+var magics: Array # depends on CharacterStats.magics
+var techniques: Array # depends on CharacterStats.techniques
 var items: Array = [
 	"Bautista Daily Special", "Inspiriting Plum (M)"
-]
+] # make an inventory
 
 
 func _ready():
@@ -38,7 +34,7 @@ func _ready_sub_container(array: Array):
 	if array.empty():
 		subContainer.grab_focus()
 		subContainerButtons.clear()
-		subContainer.get_node("ColorRect").rect_size.y = 24
+		subContainer.get_node("ColorRect").rect_size.y = 20
 	else:
 		var newButton
 		for item in array:
@@ -63,7 +59,7 @@ func _clear_sub_container():
 
 func _set_focus_neighbors(container: Control):
 	var i: int = 0
-	var buttons = container.get_children()
+	var buttons: Array = container.get_children()
 	while i < buttons.size():
 		buttons[i].focus_neighbour_top = buttons[i - 1].get_path()
 		buttons[i].focus_neighbour_bottom = buttons[i + 1].get_path() if i != buttons.size() - 1 else buttons[0].get_path()
