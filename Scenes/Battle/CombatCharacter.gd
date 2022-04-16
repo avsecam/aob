@@ -2,7 +2,8 @@ extends Spatial
 class_name CombatCharacter
 
 
-signal attack(damage)
+signal attack(info)
+signal magic(info)
 signal damaged()
 signal downed()
 
@@ -16,13 +17,10 @@ var characterStats: CharacterStats
 var isHero: bool = false
 var isSelected: bool = false
 
+
 func _ready():
-	# set the character scene to be shown FOR ENEMIES ONLY (FOR NOW)
-	if isHero:
-		characterStats = character.characterStats
-	else:
-		add_child(load(GameData.enemyScenePath).instance()) # make this dynamic when enemy tscn's are added
-		character = get_child(get_children().size() - 1)
+	characterStats = character.characterStats
+	character = get_child(get_children().size() - 1)
 	
 	# set the combat info
 	characterName.text = characterStats.characterName
@@ -51,23 +49,25 @@ func _update_resource_bar():
 
 func attack():
 	print("%s is attacking..." % characterStats.characterName)
-	var damageInfo: Dictionary = {
+	var actionInfo: Dictionary = {
 		"source": character,
 		"targetType": GameData.TargetType.SINGLE,
 		"damageType": GameData.DamageType.PHYSICAL,
 		"damage": characterStats.attackPhys
 	}
-	emit_signal("attack", damageInfo)
+	emit_signal("attack", actionInfo)
 
 
 func magic(spell: String):
-	var damageInfoRaw: Dictionary = Magic.magics[spell.to_lower()]
-	var damageInfo: Dictionary = {
+	print("%s is casting %s..." % [characterStats.characterName, spell])
+	var actionInfoRaw: Dictionary = Magic.magics[spell.to_lower()]
+	var actionInfo: Dictionary = {
 		"source": character,
-		"targetType": damageInfoRaw["targetType"],
-		"damageType": damageInfoRaw["damageType"],
-		"damage": characterStats.attackPhys *  damageInfoRaw["damageMultiplier"]
+		"targetType": actionInfoRaw["targetType"],
+		"damageType": actionInfoRaw["damageType"],
+		"damage": characterStats.attackElem *  actionInfoRaw["damageMultiplier"]
 	}
+	emit_signal("magic", actionInfo)
 
 
 func technique():
@@ -76,13 +76,13 @@ func item():
 	pass
 
 
-func affect(damageInfo: Dictionary):
+func affect(actionInfo: Dictionary):
 	# check if physical or elemental damage
 	var finalDamage: int
-	if damageInfo["damageType"] == GameData.DamageType.PHYSICAL:
-		finalDamage = damageInfo["damage"] - (characterStats.defensePhys * 0.5)
+	if actionInfo["damageType"] == GameData.DamageType.PHYSICAL:
+		finalDamage = actionInfo["damage"] - (characterStats.defensePhys * 0.5)
 	else:
-		finalDamage = damageInfo["damage"] - (characterStats.defenseElem * 0.5)
+		finalDamage = actionInfo["damage"] - (characterStats.defenseElem * 0.5)
 	
 	emit_signal("damaged")
 	if characterStats.currentHealth - finalDamage <= 0:
@@ -90,5 +90,5 @@ func affect(damageInfo: Dictionary):
 		queue_free()
 		emit_signal("downed")
 	characterStats.currentHealth -= finalDamage
-	print("%s dealt %s damage to %s!" % [damageInfo["source"].name, finalDamage, characterStats.characterName])
+	print("%s dealt %s damage to %s!" % [actionInfo["source"].name, finalDamage, characterStats.characterName])
 	_update_health_bar()

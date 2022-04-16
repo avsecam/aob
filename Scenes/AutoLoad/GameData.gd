@@ -11,6 +11,7 @@ onready var player: KinematicBody = main.get_node("Overworld/Player")
 const playerScene: Resource = preload("res://Scenes/Character/Player.tscn")
 
 const enemyScenePath: String = "res://Scenes/Character/Enemy/Enemy.tscn"
+const enemyFolderPath: String = "res://Scenes/Character/Enemy/"
 const heroScenePath: String = "res://Scenes/Character/Hero/Hero.tscn"
 const heroFolderPath: String = "res://Scenes/Character/Hero/"
 

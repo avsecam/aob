@@ -15,4 +15,4 @@ animations = [ {
 spriteFrames = SubResource( 1 )
 
 [node name="Sprite" parent="." index="0"]
-frame = 4
+frame = 0

@@ -7,3 +7,6 @@
 [node name="Akune" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 spriteFrames = ExtResource( 3 )
+
+[node name="Sprite" parent="." index="0"]
+frame = 4

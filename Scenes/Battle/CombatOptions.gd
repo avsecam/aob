@@ -3,6 +3,7 @@ class_name CombatOptions
 
 
 signal subContainerReadied()
+signal subContainerClosed()
 
 enum Buttons {ATTACK, MAGIC, TECHNIQUE, ITEM, DEFEND, FLEE}
 
@@ -53,7 +54,8 @@ func _ready_sub_container(array: Array):
 	subContainer.visible = true
 
 
-func _clear_sub_container():
+func clear_sub_container():
+	subContainerButtons = subContainer.get_node("Buttons").get_children()
 	if subContainerButtons.empty():
 		return
 	for button in subContainerButtons:
@@ -88,8 +90,9 @@ func _get_input():
 		if subContainer.visible:
 			currentSubContainer.grab_focus()
 			currentSubContainer = null
-			_clear_sub_container()
+			clear_sub_container()
 			subContainer.visible = false
+			emit_signal("subContainerClosed")
 
 
 func _physics_process(_delta):

@@ -13,7 +13,7 @@ const MAX_STEPS_TIL_ENCOUNTER: int = 100 - 60
 
 # sample array of enemies
 var enemies: Array = [
-	"res://Scenes/Character/Enemy/Large Rat.tres"
+	"res://Scenes/Character/Enemy/LargeRat.tscn"
 #	"res://Scenes/Character/Enemy/Slime.tres",
 #	"res://Scenes/Character/Enemy/Quorralis.tres"
 ]

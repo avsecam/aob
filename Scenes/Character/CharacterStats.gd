@@ -19,6 +19,7 @@ export var critMultiplier: float
 export var critChance: float
 export var xp: int
 export var weaknesses: Array
+export var resistances: Array
 
 # Both are arrays of strings
 export var magics: Array

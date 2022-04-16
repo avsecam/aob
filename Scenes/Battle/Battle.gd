@@ -9,11 +9,13 @@ onready var combatOptions: CombatOptions = $CombatGUI/CombatOptions
 
 var turns: int = -1 # Number of turns cycled through
 var turnOrder: Array = []
-var currentCharacter: Position3D
+var currentCharacterPosition: Position3D
 
 var actionInfo: Dictionary
 var inTargetSelect: bool = false
 var targets: Array = [] # Array of positions
+
+var totalExp: int # add to this when enemy is defeated or w/e
 
 
 func _ready():
@@ -25,6 +27,7 @@ func _ready():
 	_set_character_signals()
 	
 	combatOptions.connect("subContainerReadied", self, "_set_suboptions_signals")
+	combatOptions.connect("subContainerClosed", self, "_unset_suboptions_signals")
 	_set_options_signals()
 	_set_suboptions_signals()
 
@@ -55,13 +58,15 @@ func _refresh_target_selection():
 
 func _confirm_action(target: Spatial):
 	target.get_child(0).affect(actionInfo)
+	combatOptions.subContainer.visible = false
+	combatOptions.clear_sub_container()
 
 
 func _add_participants():
 	var combatCharacter: Spatial
 	var heroes: Array = PlayerData.activeHeroes
 	var enemies: Array = EncounterHandler.enemies
-	var newEnemy: CharacterStats
+	var newEnemy: Enemy
 	var i: int = 0
 	while i < heroes.size():
 		combatCharacter = load("res://Scenes/Battle/CombatCharacter.tscn").instance()
@@ -75,9 +80,10 @@ func _add_participants():
 	i = 0
 	while i < enemies.size():
 		combatCharacter = load("res://Scenes/Battle/CombatCharacter.tscn").instance()
-		newEnemy = load(enemies[i])
-		newEnemy.ready()
-		combatCharacter.characterStats = newEnemy
+		newEnemy = load(enemies[i]).instance()
+		print(newEnemy.name)
+		combatCharacter.add_child(newEnemy)
+		combatCharacter.character = newEnemy
 		enemyPositions[i].add_child(combatCharacter)
 		i += 1
 	
@@ -101,7 +107,7 @@ func _set_turn_order():
 		turnOrder.append(character)
 	turnOrder.pop_back()
 	turnOrder.sort_custom(SortBySpeed, "_sort_speed")
-	currentCharacter = turnOrder[0]
+	currentCharacterPosition = turnOrder[0]
 
 
 # Next character in current turn queue
@@ -110,8 +116,8 @@ func _next_turn():
 	turnOrder.remove(0)
 	if turnOrder == []:
 		_set_turn_order()
-		return
-	currentCharacter = turnOrder[0]
+	else:
+		currentCharacterPosition = turnOrder[0]
 	_set_options_signals()
 	_set_combat_options()
 
@@ -119,8 +125,8 @@ func _next_turn():
 # Show combat options or not
 # Also set the magics and techniques available
 func _set_combat_options():
-	var combatCharacter: CombatCharacter = currentCharacter.get_child(0)
-	if currentCharacter.get_parent().name == "Heroes":
+	var combatCharacter: CombatCharacter = currentCharacterPosition.get_child(0)
+	if currentCharacterPosition.get_parent().name == "Heroes":
 		combatOptions.visible = true
 		combatOptions.label.text = combatCharacter.characterStats.characterName
 		combatOptions.magics = combatCharacter.characterStats.magics
@@ -143,22 +149,24 @@ func _set_character_signals():
 
 # set/unset signals for ATTACK, DEFEND, FLEE
 func _set_options_signals():
-	combatOptions.attackButton.connect("pressed", currentCharacter.get_child(0), "attack")
+	combatOptions.attackButton.connect("pressed", currentCharacterPosition.get_child(0), "attack")
 	combatOptions.defendButton
 	combatOptions.fleeButton.connect("pressed", self, "_exit_battle")
 	
-	currentCharacter.get_child(0).connect("attack", self, "_enter_target_select")
+	currentCharacterPosition.get_child(0).connect("attack", self, "_enter_target_select")
+	currentCharacterPosition.get_child(0).connect("magic", self, "_enter_target_select")
 func _unset_options_signals():
-	combatOptions.attackButton.disconnect("pressed", currentCharacter.get_child(0), "attack")
+	combatOptions.attackButton.disconnect("pressed", currentCharacterPosition.get_child(0), "attack")
 	combatOptions.defendButton
 	combatOptions.fleeButton.disconnect("pressed", self, "_exit_battle")
 	
-	currentCharacter.get_child(0).disconnect("attack", self, "_enter_target_select")
+	currentCharacterPosition.get_child(0).disconnect("attack", self, "_enter_target_select")
+	currentCharacterPosition.get_child(0).disconnect("magic", self, "_enter_target_select")
 
 
-# set signals for MAGICS and TECHNIQUES
+# set/unset signals for MAGICS and TECHNIQUES
 func _set_suboptions_signals():
-	var character = currentCharacter.get_child(0)
+	var character = currentCharacterPosition.get_child(0)
 	if combatOptions.currentSubContainer == combatOptions.magicButton:
 		for button in combatOptions.subContainerButtons:
 			button.connect("pressed", character, "magic", [button.text.to_lower()])
@@ -168,6 +176,17 @@ func _set_suboptions_signals():
 	elif combatOptions.currentSubContainer == combatOptions.itemButton:
 		for button in combatOptions.subContainerButtons:
 			button.connect("pressed", character, "item", [button.text.to_lower()])
+func _unset_suboptions_signals():
+	var character = currentCharacterPosition.get_child(0)
+	if combatOptions.currentSubContainer == combatOptions.magicButton:
+		for button in combatOptions.subContainerButtons:
+			button.disconnect("pressed", character, "magic")
+	elif combatOptions.currentSubContainer == combatOptions.techniqueButton:
+		for button in combatOptions.subContainerButtons:
+			button.disconnect("pressed", character, "technique")
+	elif combatOptions.currentSubContainer == combatOptions.itemButton:
+		for button in combatOptions.subContainerButtons:
+			button.disconnect("pressed", character, "item")
 
 
 func _refresh_heroPositions():
