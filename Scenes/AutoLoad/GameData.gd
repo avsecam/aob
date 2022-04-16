@@ -9,3 +9,12 @@ const playerScene: Resource = preload("res://Scenes/Character/Player.tscn")
 const enemyScenePath: String = "res://Scenes/Character/Enemy/Enemy.tscn"
 const heroScenePath: String = "res://Scenes/Character/Hero/Hero.tscn"
 const heroFolderPath: String = "res://Scenes/Character/Hero/"
+
+const overworld: Resource = preload("res://Scenes/Overworld/Overworld.tscn")
+
+const heroStatsPaths: Dictionary = {
+	"Akune": "res://Scenes/Character/Hero/Akune.tres",
+	"Elena": "res://Scenes/Character/Hero/Elena.tres",
+	"Eo": "res://Scenes/Character/Hero/Eo.tres",
+	"Klyne": "res://Scenes/Character/Hero/Klyne.tres"
+}

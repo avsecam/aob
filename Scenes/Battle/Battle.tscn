@@ -63,25 +63,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.761061, 0, 8.86215 )
 
 [node name="BattleCamera" parent="." instance=ExtResource( 3 )]
 
-[node name="TipExit" type="Label" parent="."]
-modulate = Color( 0.517647, 0.0862745, 0, 1 )
-margin_left = 38.1407
-margin_top = 606.013
-margin_right = 146.141
-margin_bottom = 620.013
-rect_scale = Vector2( 6, 6 )
-text = "ESC to exit battle"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TurnNumber" type="Label" parent="."]
 anchor_right = 1.0
 margin_right = -1152.0
 margin_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_scale = Vector2( 10, 10 )
+rect_scale = Vector2( 10, 8 )
 text = "asdasdasd"
 align = 1
 __meta__ = {
@@ -100,17 +88,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CombatGUI"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-custom_constants/separation = 15
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CombatOptions" parent="CombatGUI/HBoxContainer" instance=ExtResource( 2 )]
+[node name="CombatOptions" parent="CombatGUI" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 490.0

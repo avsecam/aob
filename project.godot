@@ -13,9 +13,33 @@ _global_script_classes=[ {
 "class": "CharacterStats",
 "language": "GDScript",
 "path": "res://Scenes/Character/CharacterStats.gd"
+}, {
+"base": "Spatial",
+"class": "CombatCharacter",
+"language": "GDScript",
+"path": "res://Scenes/Battle/CombatCharacter.gd"
+}, {
+"base": "Control",
+"class": "CombatOptions",
+"language": "GDScript",
+"path": "res://Scenes/Battle/CombatOptions.gd"
+}, {
+"base": "Spatial",
+"class": "Hero",
+"language": "GDScript",
+"path": "res://Scenes/Character/Hero/Hero.gd"
+}, {
+"base": "Node",
+"class": "Magics",
+"language": "GDScript",
+"path": "res://Scenes/Magic/Magic.gd"
 } ]
 _global_script_class_icons={
-"CharacterStats": ""
+"CharacterStats": "",
+"CombatCharacter": "",
+"CombatOptions": "",
+"Hero": "",
+"Magics": ""
 }
 
 [application]

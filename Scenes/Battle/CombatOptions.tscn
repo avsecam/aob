@@ -4,9 +4,9 @@
 
 [node name="CombatOptions" type="Control"]
 anchor_right = 0.234
-anchor_bottom = 0.139
+anchor_bottom = 0.233
 margin_right = 0.47998
-margin_bottom = -0.0800095
+margin_bottom = 0.23999
 rect_min_size = Vector2( 300, 0 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -17,40 +17,87 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Container"]
 margin_right = 300.0
-margin_bottom = 14.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
 text = "Character Name"
 align = 1
 valign = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Container"]
-margin_top = 18.0
+margin_top = 24.0
 margin_right = 300.0
-margin_bottom = 86.0
+margin_bottom = 164.0
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Button" type="Button" parent="Container/Buttons"]
+[node name="Attack" type="Button" parent="Container/Buttons"]
 margin_right = 300.0
 margin_bottom = 20.0
 text = "Attack"
 
-[node name="Button2" type="Button" parent="Container/Buttons"]
+[node name="Magic" type="Button" parent="Container/Buttons"]
 margin_top = 24.0
 margin_right = 300.0
 margin_bottom = 44.0
-text = "Defend"
+text = "Magic"
 
-[node name="Button3" type="Button" parent="Container/Buttons"]
+[node name="Technique" type="Button" parent="Container/Buttons"]
 margin_top = 48.0
 margin_right = 300.0
 margin_bottom = 68.0
+text = "Technique"
+
+[node name="Item" type="Button" parent="Container/Buttons"]
+margin_top = 72.0
+margin_right = 300.0
+margin_bottom = 92.0
+text = "Item"
+
+[node name="Defend" type="Button" parent="Container/Buttons"]
+margin_top = 96.0
+margin_right = 300.0
+margin_bottom = 116.0
+text = "Defend"
+
+[node name="Flee" type="Button" parent="Container/Buttons"]
+margin_top = 120.0
+margin_right = 300.0
+margin_bottom = 140.0
 text = "Flee"
+
+[node name="SubContainer" type="Control" parent="."]
+visible = false
+anchor_left = 0.767
+anchor_top = 0.286
+anchor_right = 1.767
+anchor_bottom = 0.524
+margin_left = -0.100006
+margin_top = -0.0480042
+margin_right = -0.100037
+margin_bottom = -0.0320053
+rect_min_size = Vector2( 200, 40 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="SubContainer"]
+modulate = Color( 1, 1, 1, 0.619608 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.709804, 0.117647, 0.117647, 1 )
+
+[node name="Buttons" type="VBoxContainer" parent="SubContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -61,3 +108,7 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[connection signal="pressed" from="Container/Buttons/Magic" to="." method="_on_Magic_pressed"]
+[connection signal="pressed" from="Container/Buttons/Technique" to="." method="_on_Technique_pressed"]
+[connection signal="pressed" from="Container/Buttons/Item" to="." method="_on_Item_pressed"]

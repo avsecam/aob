@@ -3,6 +3,8 @@ extends KinematicBody
 
 signal step()
 
+var character: Hero
+
 var distanceTraveled: float = 0 # should reset to 0 when it reaches EncounterHandler.STEP_SIZE
 var currentPosition: Vector3
 var lastPosition: Vector3
@@ -76,13 +78,7 @@ func _get_distance_traveled():
 
 
 func _set_leader_hero():
-	var leaderHero: Spatial = load("%s%s.tscn" % [GameData.heroFolderPath, PlayerData.leaderHero.characterName]).instance()
-	add_child(leaderHero)
-
-
-
-
-
-
-
-
+	PlayerData.remove_child(PlayerData.leaderHero)
+	add_child(PlayerData.leaderHero)
+	character = get_child(2)
+	character.visible = true
