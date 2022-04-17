@@ -5,15 +5,14 @@ class_name CombatOptions
 signal subContainerReadied()
 signal subContainerClosed()
 
-enum Buttons {ATTACK, MAGIC, TECHNIQUE, ITEM, DEFEND, FLEE}
 
 onready var mainButtons: Array = $Container/Buttons.get_children()
-onready var attackButton: Button = mainButtons[Buttons.ATTACK]
-onready var magicButton: Button = mainButtons[Buttons.MAGIC]
-onready var techniqueButton: Button = mainButtons[Buttons.TECHNIQUE]
-onready var itemButton: Button = mainButtons[Buttons.ITEM]
-onready var defendButton: Button = mainButtons[Buttons.DEFEND]
-onready var fleeButton: Button = mainButtons[Buttons.FLEE]
+onready var attackButton: Button = mainButtons[GameData.ActionType.ATTACK]
+onready var magicButton: Button = mainButtons[GameData.ActionType.MAGIC]
+onready var techniqueButton: Button = mainButtons[GameData.ActionType.TECHNIQUE]
+onready var itemButton: Button = mainButtons[GameData.ActionType.ITEM]
+onready var defendButton: Button = mainButtons[GameData.ActionType.DEFEND]
+onready var fleeButton: Button = mainButtons[GameData.ActionType.FLEE]
 
 onready var subContainer: Control = $SubContainer
 onready var subContainerButtons: Array = $SubContainer/Buttons.get_children()

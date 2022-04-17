@@ -7,6 +7,8 @@ onready var gui: Control = $CombatGUI
 onready var turnNumber: Label = $TurnNumber
 onready var combatOptions: CombatOptions = $CombatGUI/CombatOptions
 
+var characterPositions: Array # Contains enemyPositions + heroPositions
+
 var turns: int = -1 # Number of turns cycled through
 var turnOrder: Array = []
 var currentCharacterPosition: Position3D
@@ -14,6 +16,7 @@ var currentCharacterPosition: Position3D
 var actionInfo: Dictionary
 var inTargetSelect: bool = false
 var targets: Array = [] # Array of positions
+var singleTargetIndex: int = 0 # index of current target in characterPositions (FOR SINGLE TARGET ONLY)
 
 var totalExp: int # add to this when enemy is defeated or w/e
 
@@ -35,23 +38,54 @@ func _ready():
 func _enter_target_select(info: Dictionary):
 	actionInfo = info
 	combatOptions.attackButton.release_focus()
-	targets.append(enemyPositions[0])
+	
+	match(actionInfo["targetType"]):
+		GameData.TargetType.SINGLE:
+			targets.append(characterPositions[0])
+		GameData.TargetType.GROUP:
+			if actionInfo["offensive"]:
+				targets.append_array(enemyPositions)
+			else:
+				targets.append_array(heroPositions)
+	
 	_refresh_target_selection()
 	inTargetSelect = true
 
 
 func _exit_target_select():
+	actionInfo = {}
 	inTargetSelect = false
 	targets = []
 	_refresh_target_selection()
 	_set_combat_options()
 
 
+func _single_target_move_choice(amount: int):
+	singleTargetIndex += amount
+	if singleTargetIndex < 0:
+		singleTargetIndex = characterPositions.size() + amount
+	elif singleTargetIndex >= characterPositions.size():
+		singleTargetIndex = 0
+	if characterPositions[singleTargetIndex] == currentCharacterPosition:
+		if singleTargetIndex + amount < characterPositions.size():
+			singleTargetIndex += amount
+		else:
+			singleTargetIndex = 0
+	targets.append(characterPositions[singleTargetIndex])
+	_refresh_target_selection()
+
+
 func _refresh_target_selection():
 	if inTargetSelect:
-		targets.remove(0)
-	for enemy in enemyPositions:
-		enemy.get_child(0).isSelected = false
+		match(actionInfo["targetType"]):
+			GameData.TargetType.SINGLE:
+				targets.remove(0)
+			GameData.TargetType.GROUP:
+				var previousSelectedGroup: Array = heroPositions if targets.find(enemyPositions[0]) else enemyPositions
+				for character in previousSelectedGroup:
+					targets.remove(0)
+	for character in characterPositions:
+		character.get_child(0).isSelected = false
 	for target in targets:
 		target.get_child(0).isSelected = true
 
@@ -96,6 +130,8 @@ func _add_participants():
 		if enemy.get_child_count() <= 0:
 			enemy.free()
 	_refresh_enemyPositions()
+	
+	characterPositions = enemyPositions + heroPositions
 
 
 # Call at start and when turnOrder is empty (AKA turn order finished)
@@ -136,9 +172,6 @@ func _set_combat_options():
 
 
 func _set_character_signals():
-	for character in heroPositions + enemyPositions:
-		character.get_child(0).connect("damaged", self, "_next_turn")
-	
 	# basically, if downed, remove from the battle
 	# change this behavior in the future
 	for hero in heroPositions:
@@ -202,27 +235,30 @@ func _refresh_enemyPositions():
 
 
 func _get_input():
-#	if Input.is_action_just_pressed("ui_cancel"):
-#		_exit_battle()
-	
 	if inTargetSelect:
 		# Selecting target
-		var targetIndex: int = targets[0].get_index()
-		if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up"):
-			targets.append(enemyPositions[targetIndex - 1])
-			_refresh_target_selection()
-		elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_down"):
-			if targetIndex >= enemyPositions.size() - 1:
-				targets.append(enemyPositions[0])
-			else:
-				targets.append(enemyPositions[targetIndex + 1])
-			_refresh_target_selection()
+		match(actionInfo["targetType"]):
+			GameData.TargetType.SINGLE:
+				if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up"):
+					_single_target_move_choice(-1)
+				elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_down"):
+					_single_target_move_choice(1)
+			
+			GameData.TargetType.GROUP:
+				if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up") \
+				or Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_down"):
+					if targets == enemyPositions:
+						targets.append_array(heroPositions)
+					else:
+						targets.append_array(enemyPositions)
+					_refresh_target_selection()
 		
 		# Confirming target
-		elif Input.is_action_just_pressed("ui_accept"):
+		if Input.is_action_just_pressed("ui_accept"):
 			for target in targets:
 				_confirm_action(target)
 			_exit_target_select()
+			_next_turn()
 			
 		# Cancel
 		elif Input.is_action_just_pressed("ui_cancel"):

@@ -51,6 +51,7 @@ func attack():
 	print("%s is attacking..." % characterStats.characterName)
 	var actionInfo: Dictionary = {
 		"source": character,
+		"offensive": true,
 		"targetType": GameData.TargetType.SINGLE,
 		"damageType": GameData.DamageType.PHYSICAL,
 		"damage": characterStats.attackPhys
@@ -63,6 +64,7 @@ func magic(spell: String):
 	var actionInfoRaw: Dictionary = Magic.magics[spell.to_lower()]
 	var actionInfo: Dictionary = {
 		"source": character,
+		"offensive": actionInfoRaw["offensive"],
 		"targetType": actionInfoRaw["targetType"],
 		"damageType": actionInfoRaw["damageType"],
 		"damage": characterStats.attackElem *  actionInfoRaw["damageMultiplier"]
@@ -80,9 +82,9 @@ func affect(actionInfo: Dictionary):
 	# check if physical or elemental damage
 	var finalDamage: int
 	if actionInfo["damageType"] == GameData.DamageType.PHYSICAL:
-		finalDamage = actionInfo["damage"] - (characterStats.defensePhys * 0.5)
+		finalDamage = max(actionInfo["damage"] - (characterStats.defensePhys * 0.5), 1)
 	else:
-		finalDamage = actionInfo["damage"] - (characterStats.defenseElem * 0.5)
+		finalDamage = max(actionInfo["damage"] - (characterStats.defenseElem * 0.5), 1)
 	
 	emit_signal("damaged")
 	if characterStats.currentHealth - finalDamage <= 0:

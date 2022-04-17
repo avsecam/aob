@@ -3,7 +3,9 @@ class_name Magics
 
 
 var fireball: Dictionary = {
-	"targetType": GameData.TargetType.SINGLE,
+	"name": "Fireball",
+	"offensive": true,
+	"targetType": GameData.TargetType.GROUP,
 	"damageType": GameData.DamageType.FIRE,
 	"damageMultiplier": 1
 }

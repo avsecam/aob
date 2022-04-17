@@ -1,5 +1,6 @@
 extends Node
 
+enum ActionType {ATTACK, MAGIC, TECHNIQUE, ITEM, DEFEND, FLEE}
 enum TargetType {SINGLE, GROUP, ALL}
 enum DamageType {PHYSICAL, 
 	FIRE, WATER, GRASS, ELECTRIC, WIND, LIGHT, DARK, TEMPORA
