@@ -218,19 +218,20 @@ func _set_options_signals():
 	combatOptions.defendButton
 	combatOptions.fleeButton.connect("pressed", self, "_exit_battle")
 	
-	if character.isHero:
-		character.connect("attackReadied", self, "_enter_target_select")
-		character.connect("magicReadied", self, "_enter_target_select")
-	else:
-		character.connect("attackReadied", self, "_enter_target_select")
-		character.connect("magicReadied", self, "_enter_target_select")
+	character.connect("attackReadied", self, "_enter_target_select")
+	character.connect("magicReadied", self, "_enter_target_select")
+	character.connect("techniqueReadied", self, "_enter_target_select")
+	
 func _unset_options_signals():
+	var character = currentCharacterPosition.get_child(0)
 	combatOptions.attackButton.disconnect("pressed", currentCharacterPosition.get_child(0), "action")
 	combatOptions.defendButton
 	combatOptions.fleeButton.disconnect("pressed", self, "_exit_battle")
 	
-	currentCharacterPosition.get_child(0).disconnect("attackReadied", self, "_enter_target_select")
-	currentCharacterPosition.get_child(0).disconnect("magicReadied", self, "_enter_target_select")
+	character.disconnect("attackReadied", self, "_enter_target_select")
+	character.disconnect("magicReadied", self, "_enter_target_select")
+	character.disconnect("techniqueReadied", self, "_enter_target_select")
+	
 
 
 # set/unset signals for MAGICS, TECHNIQUES, and ITEMS

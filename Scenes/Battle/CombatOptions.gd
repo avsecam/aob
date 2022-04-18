@@ -33,7 +33,7 @@ func _ready():
 
 
 func _ready_sub_container(array: Array):
-	if array.empty():
+	if array == []:
 		subContainer.grab_focus()
 		subContainerButtons.clear()
 		subContainer.get_node("ColorRect").rect_size.y = 20

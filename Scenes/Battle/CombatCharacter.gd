@@ -33,6 +33,7 @@ func _ready():
 	if !isHero:
 		character.connect("actionReadied", self, "_on_enemy_readied")
 
+
 func _physics_process(_delta):
 	if isSelected:
 		combatInfo.modulate = Color(1, 1, 0, 1)
@@ -51,7 +52,7 @@ func _update_resource_bar():
 
 
 # contains readying attack, magic, technique, and item
-func action(action: ActionButton = ActionButton.new(), category: String = ""):
+func action(action: Button = Button.new(), category: String = ""):
 	if !isHero:
 		character.action()
 		return

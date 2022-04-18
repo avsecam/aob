@@ -7,9 +7,9 @@ signal actionReadied(actionType, actionInfo, selectedTargets)
 var characterInfo: Array # contains all combatant stats for targeting
 var heroInfo: Array
 var enemyInfo: Array
-var attackChance: float = 1
-var magicChance: float = 0.5
-var techniqueChance: float = 0.5
+var attackChance: float = 60
+var magicChance: float = 50
+var techniqueChance: float = 50
 #var itemChance: float = 0.3
 var actionTypeChances: Array = [
 	[GameData.ActionType.ATTACK, attackChance],
@@ -26,7 +26,7 @@ func _ready():
 	characterStats.ready()
 	
 	characterStats.techniques = [ # [name, weight]
-		["scratch", 0.5]
+		["scratch", 50]
 	]
 	
 	# clear chances if corresponding array is empty
@@ -56,9 +56,8 @@ func action():
 		emit_signal("actionReadied", actionType, actionInfo, selectedTargets)
 		
 	else:
-		var category: int = actionType
 		var actionInfoRaw: Dictionary
-		match(category):
+		match(actionType):
 			GameData.ActionType.MAGIC:
 				print("%s is casting %s..." % [characterStats.characterName, subAction])
 				actionInfoRaw = Magic.magics[subAction.to_lower()]
@@ -72,9 +71,9 @@ func action():
 		actionInfo["offensive"] = actionInfoRaw["offensive"]
 		actionInfo["targetType"] = actionInfoRaw["targetType"]
 		actionInfo["damageType"] = actionInfoRaw["damageType"]
+		selectedTargets = _choose_target(actionInfo["targetType"])
 		
-		match(category):
-			GameData.ActionType.MAGIC: emit_signal("actionReadied", actionType, actionInfo, selectedTargets)
+		emit_signal("actionReadied", actionType, actionInfo, selectedTargets)
 
 
 # choose what action to do
@@ -97,21 +96,21 @@ func _choose_action():
 # returns the index of the selected pair
 func _rng_weighted(array: Array) -> int:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	var randomNumber: float
-	var weightSum: float = 0
-	var returnIndex: int = 0 # index of selected chance
+	var randomNumber: int
+	var weightSum: int
+	var returnIndex: int # index of selected chance
 	
 	for pair in array:
 		weightSum += pair[1]
 	
 	rng.randomize()
-	rng.randf_range(0, weightSum)
+	randomNumber = rng.randi_range(0, weightSum)
 	
-	while returnIndex < array.size():
+	while returnIndex < array.size() - 1:
 		if randomNumber < array[returnIndex][1]:
 			break
 		randomNumber -= array[returnIndex][1]
-	
+		returnIndex += 1
 	return returnIndex
 
 
@@ -134,8 +133,3 @@ func set_characterInfo():
 	for character in characterInfo:
 		if character[0].get_child(0).isHero: heroInfo.append(character[0])
 		else: enemyInfo.append(character[0])
-
-
-func _physics_process(delta):
-	if Input.is_action_just_pressed("sprint"):
-		print(characterInfo)
