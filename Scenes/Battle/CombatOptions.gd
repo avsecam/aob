@@ -38,10 +38,11 @@ func _ready_sub_container(array: Array):
 		subContainerButtons.clear()
 		subContainer.get_node("ColorRect").rect_size.y = 20
 	else:
-		var newButton
+		var newButton: ActionButton
 		for item in array:
-			newButton = Button.new()
+			newButton = ActionButton.new()
 			newButton.text = item
+			newButton.action = Utils.find_action(item)
 			subContainer.get_node("Buttons").add_child(newButton)
 		_set_focus_neighbors($SubContainer/Buttons)
 		subContainerButtons = subContainer.get_node("Buttons").get_children()

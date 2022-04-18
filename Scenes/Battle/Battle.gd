@@ -103,8 +103,8 @@ func _confirm_action():
 	actionNameLabel.text = actionInfo["name"]
 	actionNameLabel.visible = true
 	
+	currentCharacterPosition.get_child(0).confirm_action(actionInfo)
 	for target in targets:
-		print(actionInfo)
 		target.get_child(0).affect(actionInfo)
 	
 	combatOptions.subContainer.visible = false

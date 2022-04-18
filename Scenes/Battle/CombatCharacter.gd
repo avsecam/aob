@@ -51,7 +51,7 @@ func _update_resource_bar():
 
 
 # contains readying attack, magic, technique, and item
-func action(action: Button = Button.new(), category: String = ""):
+func action(action: ActionButton = ActionButton.new(), category: String = ""):
 	if !isHero:
 		character.action()
 		return
@@ -72,12 +72,12 @@ func action(action: Button = Button.new(), category: String = ""):
 		match(category.to_lower()):
 			"magic":
 				print("%s is casting %s..." % [characterStats.characterName, action.text])
-				actionInfo = Magic.magics[action.text.to_lower()]
+				actionInfo = action.action
 				actionInfo["damage"] = characterStats.attackElem * actionInfo["damageMultiplier"]
 			
 			"technique":
 				print("%s is readying %s..." % [characterStats.characterName, action.text])
-				actionInfo = Technique.techniques[action.text.to_lower()]
+				actionInfo = action.action
 				actionInfo["damage"] = characterStats.attackPhys * actionInfo["damageMultiplier"]
 		
 		actionInfo["source"] = character
@@ -97,7 +97,16 @@ func _on_enemy_readied(actionType: int, actionInfo: Dictionary, selectedTargets:
 			emit_signal("techniqueReadied", actionInfo, selectedTargets)
 
 
+# mana cost, hp cost, etc
+func confirm_action(actionInfo: Dictionary):
+	if actionInfo.has("resourceCost"):
+		characterStats.currentResource -= actionInfo["resourceCost"]
+		_update_resource_bar()
+
+
 func affect(actionInfo: Dictionary):
+	if actionInfo["source"] == character:
+		pass
 	# check if physical or elemental damage
 	var finalDamage: int
 	if actionInfo["damageType"] == GameData.DamageType.PHYSICAL:
