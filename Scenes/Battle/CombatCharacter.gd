@@ -56,13 +56,12 @@ func action(action: Button = Button.new(), category: String = ""):
 		character.action()
 		return
 	
-	var actionInfo: Dictionary = {
-		"source": character
-	}
+	var actionInfo: Dictionary
 	
 	if action.text.to_lower() == "attack": # Attack
 		print("%s is attacking..." % characterStats.characterName)
 		actionInfo["name"] = "Attack"
+		actionInfo["source"] = character
 		actionInfo["offensive"] = true
 		actionInfo["targetType"] = GameData.TargetType.SINGLE
 		actionInfo["damageType"] = GameData.DamageType.PHYSICAL
@@ -70,22 +69,18 @@ func action(action: Button = Button.new(), category: String = ""):
 		emit_signal("attackReadied", actionInfo)
 		
 	else:
-		var actionInfoRaw: Dictionary
 		match(category.to_lower()):
 			"magic":
 				print("%s is casting %s..." % [characterStats.characterName, action.text])
-				actionInfoRaw = Magic.magics[action.text.to_lower()]
-				actionInfo["damage"] = characterStats.attackElem * actionInfoRaw["damageMultiplier"]
+				actionInfo = Magic.magics[action.text.to_lower()]
+				actionInfo["damage"] = characterStats.attackElem * actionInfo["damageMultiplier"]
 			
 			"technique":
 				print("%s is readying %s..." % [characterStats.characterName, action.text])
-				actionInfoRaw = Technique.techniques[action.text.to_lower()]
-				actionInfo["damage"] = characterStats.attackPhys * actionInfoRaw["damageMultiplier"]
+				actionInfo = Technique.techniques[action.text.to_lower()]
+				actionInfo["damage"] = characterStats.attackPhys * actionInfo["damageMultiplier"]
 		
-		actionInfo["name"] = actionInfoRaw["name"]
-		actionInfo["offensive"] = actionInfoRaw["offensive"]
-		actionInfo["targetType"] = actionInfoRaw["targetType"]
-		actionInfo["damageType"] = actionInfoRaw["damageType"]
+		actionInfo["source"] = character
 		
 		match(category.to_lower()):
 			"magic": emit_signal("magicReadied", actionInfo)

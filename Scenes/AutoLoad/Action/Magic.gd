@@ -6,7 +6,8 @@ var fireball: Dictionary = {
 	"offensive": true,
 	"targetType": GameData.TargetType.SINGLE,
 	"damageType": GameData.DamageType.FIRE,
-	"damageMultiplier": 1
+	"damageMultiplier": 1,
+	"resourceCost": 6
 }
 
 var magics: Dictionary = {

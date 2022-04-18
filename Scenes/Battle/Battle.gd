@@ -43,6 +43,8 @@ func _enter_target_select(info: Dictionary, selectedTargets: Array = []):
 	
 	if selectedTargets != []:
 		targets = selectedTargets
+		_refresh_target_selection()
+		inTargetSelect = false
 		_confirm_action()
 	else:
 		match(actionInfo["targetType"]):
@@ -55,9 +57,8 @@ func _enter_target_select(info: Dictionary, selectedTargets: Array = []):
 					targets.append_array(heroPositions)
 			GameData.TargetType.ALL:
 				targets.append_array(characterPositions)
-	
-	_refresh_target_selection()
-	inTargetSelect = true
+		_refresh_target_selection()
+		inTargetSelect = true
 
 
 func _exit_target_select():
@@ -103,15 +104,16 @@ func _confirm_action():
 	actionNameLabel.visible = true
 	
 	for target in targets:
+		print(actionInfo)
 		target.get_child(0).affect(actionInfo)
 	
 	combatOptions.subContainer.visible = false
 	combatOptions.clear_sub_container()
+	inTargetSelect = false
 	yield(get_tree().create_timer(0.7),"timeout")
 	actionNameLabel.text = ""
-	actionNameLabel.visible = false
 	_exit_target_select()
-	yield(get_tree().create_timer(0.1),"timeout")
+	actionNameLabel.visible = false
 	_next_turn()
 
 
