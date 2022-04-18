@@ -33,19 +33,13 @@ _global_script_classes=[ {
 "class": "Hero",
 "language": "GDScript",
 "path": "res://Scenes/Character/Hero/Hero.gd"
-}, {
-"base": "Node",
-"class": "Magics",
-"language": "GDScript",
-"path": "res://Scenes/Magic/Magic.gd"
 } ]
 _global_script_class_icons={
 "CharacterStats": "",
 "CombatCharacter": "",
 "CombatOptions": "",
 "Enemy": "",
-"Hero": "",
-"Magics": ""
+"Hero": ""
 }
 
 [application]
@@ -59,7 +53,8 @@ config/icon="res://icon.png"
 GameData="*res://Scenes/AutoLoad/GameData.gd"
 PlayerData="*res://Scenes/AutoLoad/PlayerData.gd"
 EncounterHandler="*res://Scenes/AutoLoad/EncounterHandler.gd"
-Magic="*res://Scenes/Magic/Magic.gd"
+Technique="*res://Scenes/AutoLoad/Action/Technique.gd"
+Magic="*res://Scenes/AutoLoad/Action/Magic.gd"
 
 [display]
 

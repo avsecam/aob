@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Character/Hero/HeroStats.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
@@ -14,5 +14,9 @@ defensePhys = 10
 defenseElem = 25
 resilience = 20
 speed = 15
+evasion = 15
 critMultiplier = 1.35
 critChance = 0.4
+magics = [  ]
+techniques = [  ]
+xp = 0

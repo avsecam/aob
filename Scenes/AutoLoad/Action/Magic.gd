@@ -1,11 +1,10 @@
 extends Node
-class_name Magics
 
 
 var fireball: Dictionary = {
 	"name": "Fireball",
 	"offensive": true,
-	"targetType": GameData.TargetType.GROUP,
+	"targetType": GameData.TargetType.SINGLE,
 	"damageType": GameData.DamageType.FIRE,
 	"damageMultiplier": 1
 }

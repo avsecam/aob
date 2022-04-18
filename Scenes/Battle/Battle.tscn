@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Battle/Battle.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Battle/CombatOptions.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Battle/BattleCamera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/TitleFont.tres" type="DynamicFont" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 30, 1, 30 )
@@ -34,63 +35,101 @@ material/0 = null
 [node name="Heroes" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.3045, 0, -0.122766 )
 
-[node name="Hero1" type="Position3D" parent="Heroes"]
+[node name="Hero1" type="Position3D" parent="Heroes" groups=[
+"HeroPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7361, 0, 2.09251 )
 
-[node name="Hero2" type="Position3D" parent="Heroes"]
+[node name="Hero2" type="Position3D" parent="Heroes" groups=[
+"HeroPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6087, 0, -7.15624 )
 
-[node name="Hero3" type="Position3D" parent="Heroes"]
+[node name="Hero3" type="Position3D" parent="Heroes" groups=[
+"HeroPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.48861, 0, -5.54119 )
 
-[node name="Hero4" type="Position3D" parent="Heroes"]
+[node name="Hero4" type="Position3D" parent="Heroes" groups=[
+"HeroPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.661413, -1.90735e-06, -15.1953 )
 
 [node name="Enemies" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179176, -1.90735e-06, 9.27264 )
 
-[node name="Enemy1" type="Position3D" parent="Enemies"]
+[node name="Enemy1" type="Position3D" parent="Enemies" groups=[
+"EnemyPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.643766, -1.90735e-06, -1.25651 )
 
-[node name="Enemy2" type="Position3D" parent="Enemies"]
+[node name="Enemy2" type="Position3D" parent="Enemies" groups=[
+"EnemyPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.389, 0, 9.6223 )
 
-[node name="Enemy3" type="Position3D" parent="Enemies"]
+[node name="Enemy3" type="Position3D" parent="Enemies" groups=[
+"EnemyPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8922, 1.90735e-06, -1.25014 )
 
-[node name="Enemy4" type="Position3D" parent="Enemies"]
+[node name="Enemy4" type="Position3D" parent="Enemies" groups=[
+"EnemyPositions",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.761061, 0, 8.86215 )
 
 [node name="BattleCamera" parent="." instance=ExtResource( 3 )]
 
-[node name="TurnNumber" type="Label" parent="."]
+[node name="CombatGUI" type="Control" parent="."]
 anchor_right = 1.0
-margin_right = -1152.0
-margin_bottom = 14.0
-grow_horizontal = 2
-grow_vertical = 2
-rect_scale = Vector2( 10, 8 )
-text = "asdasdasd"
-align = 1
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="CombatGUI" type="Control" parent="."]
-anchor_top = 1.0
+[node name="TurnNumber" type="Label" parent="CombatGUI"]
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -200.0
+margin_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 4 )
+text = "Turn -1"
+align = 1
 __meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true,
 "_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatGUI"]
+visible = false
+anchor_right = 1.0
+margin_top = 71.7345
+margin_bottom = 101.734
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 4 )
+text = "Action"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CombatGUI/ActionName"]
+show_behind_parent = true
+anchor_left = 0.451562
+anchor_right = 0.549219
+anchor_bottom = 1.0
+color = Color( 0.552941, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
 }
 
 [node name="CombatOptions" parent="CombatGUI" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 490.0
-margin_right = 790.0
-margin_bottom = 200.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -150.0
+margin_top = -200.0
+margin_right = 150.0
+margin_bottom = 0.0

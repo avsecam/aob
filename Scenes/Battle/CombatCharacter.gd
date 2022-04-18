@@ -2,8 +2,9 @@ extends Spatial
 class_name CombatCharacter
 
 
-signal attack(info)
-signal magic(info)
+signal attackReadied(info)
+signal magicReadied(info)
+signal techniqueReadied(info)
 signal damaged()
 signal downed()
 
@@ -28,7 +29,9 @@ func _ready():
 	resourceBar.max_value = characterStats.maxResource
 	_update_health_bar()
 	_update_resource_bar()
-
+	
+	if !isHero:
+		character.connect("actionReadied", self, "_on_enemy_readied")
 
 func _physics_process(_delta):
 	if isSelected:
@@ -47,44 +50,65 @@ func _update_resource_bar():
 	resourceBar.get_node("Label").text = "%d / %d" % [characterStats.currentResource, characterStats.maxResource]
 
 
-func attack():
-	print("%s is attacking..." % characterStats.characterName)
+# contains readying attack, magic, technique, and item
+func action(action: Button = Button.new(), category: String = ""):
+	if !isHero:
+		character.action()
+		return
+	
 	var actionInfo: Dictionary = {
-		"source": character,
-		"offensive": true,
-		"targetType": GameData.TargetType.SINGLE,
-		"damageType": GameData.DamageType.PHYSICAL,
-		"damage": characterStats.attackPhys
+		"source": character
 	}
-	emit_signal("attack", actionInfo)
+	
+	if action.text.to_lower() == "attack": # Attack
+		print("%s is attacking..." % characterStats.characterName)
+		actionInfo["name"] = "Attack"
+		actionInfo["offensive"] = true
+		actionInfo["targetType"] = GameData.TargetType.SINGLE
+		actionInfo["damageType"] = GameData.DamageType.PHYSICAL
+		actionInfo["damage"] = characterStats.attackPhys
+		emit_signal("attackReadied", actionInfo)
+		
+	else:
+		var actionInfoRaw: Dictionary
+		match(category.to_lower()):
+			"magic":
+				print("%s is casting %s..." % [characterStats.characterName, action.text])
+				actionInfoRaw = Magic.magics[action.text.to_lower()]
+				actionInfo["damage"] = characterStats.attackElem * actionInfoRaw["damageMultiplier"]
+			
+			"technique":
+				print("%s is readying %s..." % [characterStats.characterName, action.text])
+				actionInfoRaw = Technique.techniques[action.text.to_lower()]
+				actionInfo["damage"] = characterStats.attackPhys * actionInfoRaw["damageMultiplier"]
+		
+		actionInfo["name"] = actionInfoRaw["name"]
+		actionInfo["offensive"] = actionInfoRaw["offensive"]
+		actionInfo["targetType"] = actionInfoRaw["targetType"]
+		actionInfo["damageType"] = actionInfoRaw["damageType"]
+		
+		match(category.to_lower()):
+			"magic": emit_signal("magicReadied", actionInfo)
+			"technique": emit_signal("techniqueReadied", actionInfo)
 
 
-func magic(spell: String):
-	print("%s is casting %s..." % [characterStats.characterName, spell])
-	var actionInfoRaw: Dictionary = Magic.magics[spell.to_lower()]
-	var actionInfo: Dictionary = {
-		"source": character,
-		"offensive": actionInfoRaw["offensive"],
-		"targetType": actionInfoRaw["targetType"],
-		"damageType": actionInfoRaw["damageType"],
-		"damage": characterStats.attackElem *  actionInfoRaw["damageMultiplier"]
-	}
-	emit_signal("magic", actionInfo)
-
-
-func technique():
-	pass
-func item():
-	pass
+func _on_enemy_readied(actionType: int, actionInfo: Dictionary, selectedTargets: Array):
+	match(actionType):
+		GameData.ActionType.ATTACK:
+			emit_signal("attackReadied", actionInfo, selectedTargets)
+		GameData.ActionType.MAGIC:
+			emit_signal("magicReadied", actionInfo, selectedTargets)
+		GameData.ActionType.TECHNIQUE:
+			emit_signal("techniqueReadied", actionInfo, selectedTargets)
 
 
 func affect(actionInfo: Dictionary):
 	# check if physical or elemental damage
 	var finalDamage: int
 	if actionInfo["damageType"] == GameData.DamageType.PHYSICAL:
-		finalDamage = max(actionInfo["damage"] - (characterStats.defensePhys * 0.5), 1)
+		finalDamage = int(max(actionInfo["damage"] - (characterStats.defensePhys * 0.5), 1))
 	else:
-		finalDamage = max(actionInfo["damage"] - (characterStats.defenseElem * 0.5), 1)
+		finalDamage = int(max(actionInfo["damage"] - (characterStats.defenseElem * 0.5), 1))
 	
 	emit_signal("damaged")
 	if characterStats.currentHealth - finalDamage <= 0:
