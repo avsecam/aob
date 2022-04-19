@@ -97,7 +97,8 @@ func _refresh_target_selection():
 				for character in previousSelectedGroup:
 					targets.remove(0)
 	for character in characterPositions:
-		character.get_child(0).isSelected = false
+		if character.visible:
+			character.get_child(0).isSelected = false
 	for target in targets:
 		target.get_child(0).isSelected = true
 
@@ -224,7 +225,6 @@ func _set_options_signals():
 	character.connect("attackReadied", self, "_enter_target_select")
 	character.connect("magicReadied", self, "_enter_target_select")
 	character.connect("techniqueReadied", self, "_enter_target_select")
-	
 func _unset_options_signals():
 	var character = currentCharacterPosition.get_child(0)
 	combatOptions.attackButton.disconnect("pressed", currentCharacterPosition.get_child(0), "action")
@@ -255,6 +255,7 @@ func _refresh_enemyPositions():
 	enemyPositions = $Enemies.get_children()
 	for enemy in enemyPositions:
 		if !enemy.visible:
+			totalExp += enemy.get_child(0).characterStats.xpGain
 			enemyPositions.erase(enemy)
 
 
@@ -290,18 +291,21 @@ func _physics_process(_delta):
 	_get_input()
 	
 	if enemyPositions == [] or heroPositions == []:
+		set_physics_process(false)
 		_exit_battle()
 
 
 func _exit_battle():
+	yield(get_tree().create_timer(1), "timeout")
 	var world: Spatial = load(PlayerData.location).instance()
 	var overworld: Spatial = GameData.main.get_node("Overworld")
 	overworld.add_child(world)
 	
 	# Move all the heroes back to PlayerData
 	for hero in heroPositions:
-		var combatCharacter = hero.get_node("CombatCharacter")
-		var heroCharacter = hero.get_node("CombatCharacter").get_child(1)
+		var combatCharacter: CombatCharacter = hero.get_child(0)
+		var heroCharacter: Hero = hero.get_child(0).character
+		heroCharacter.characterStats.xp += totalExp
 		PlayerData.move_hero(heroCharacter, combatCharacter, PlayerData)
 		combatCharacter.queue_free()
 	
