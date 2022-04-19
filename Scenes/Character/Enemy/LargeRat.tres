@@ -1,21 +1,24 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://Scenes/Character/CharacterStats.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Character/Enemy/EnemyStats.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
 characterName = "Large Rat"
 level = 1
-maxHealth = 200
+maxHealth = 100
 maxResource = 10
-attackPhys = 20
-attackElem = 5
-defensePhys = 15
-defenseElem = 15
-resilience = 10
-speed = 25
-evasion = 0
-critMultiplier = 1.2
-critChance = 0.5
+attackPhys = 30
+attackElem = 10
+defensePhys = 10
+defenseElem = 10
+resilience = 15
+speed = 30
+evasion = 50
+critMultiplier = 1.5
+critChance = 1.0
 magics = [  ]
 techniques = [  ]
+xpGain = 50
+weaknesses = [  ]
+resistances = [  ]

@@ -5,4 +5,6 @@ class_name Hero
 func _ready():
 	characterStats = load(GameData.heroStatsPaths[name])
 	characterStats.ready()
-	characterStats.magics.append("Fireball")
+	characterStats.magics = [
+		["fireball", 0]
+	]

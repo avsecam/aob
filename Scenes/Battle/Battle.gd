@@ -35,6 +35,9 @@ func _ready():
 	combatOptions.connect("subContainerClosed", self, "_unset_suboptions_signals")
 	_set_options_signals()
 	_set_suboptions_signals()
+	
+	if !currentCharacterPosition.get_child(0).isHero:
+		currentCharacterPosition.get_child(0).action()
 
 
 func _enter_target_select(info: Dictionary, selectedTargets: Array = []):

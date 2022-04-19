@@ -41,8 +41,8 @@ func _ready_sub_container(array: Array):
 		var newButton: ActionButton
 		for item in array:
 			newButton = ActionButton.new()
-			newButton.text = item
-			newButton.action = Utils.find_action(item)
+			newButton.text = item[0]
+			newButton.action = Utils.find_action(item[0])
 			subContainer.get_node("Buttons").add_child(newButton)
 		_set_focus_neighbors($SubContainer/Buttons)
 		subContainerButtons = subContainer.get_node("Buttons").get_children()
