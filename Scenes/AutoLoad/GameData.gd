@@ -7,7 +7,7 @@ enum DamageType {PHYSICAL,
 }
 
 onready var main: Node = get_node("/root/Main")
-onready var player: KinematicBody = main.get_node("Overworld/Player")
+var player: KinematicBody
 
 const playerScene: Resource = preload("res://Scenes/Character/Player.tscn")
 

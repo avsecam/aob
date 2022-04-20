@@ -13,6 +13,7 @@ var velocity: Vector3 = Vector3()
 
 
 func _ready():
+	GameData.player = self
 	$Camera.look_at(translation, Vector3.UP)
 	
 	currentPosition = translation

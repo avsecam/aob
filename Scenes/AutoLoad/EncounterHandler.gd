@@ -1,7 +1,7 @@
 extends Node
 
 
-onready var overworld: Spatial = GameData.main.get_node("Overworld")
+onready var overworld: Spatial
 
 var battleScene: Resource = preload("res://Scenes/Battle/Battle.tscn")
 

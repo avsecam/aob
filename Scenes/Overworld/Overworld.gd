@@ -5,6 +5,7 @@ onready var world: Spatial = $World
 
 
 func _ready():
+	EncounterHandler.overworld = GameData.main.get_node("Overworld")
 	PlayerData.location = world.filename
 	_set_world_collisions()
 

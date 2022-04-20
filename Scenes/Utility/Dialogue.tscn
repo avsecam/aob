@@ -1,13 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/TitleFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scenes/Utility/Dialogue.gd" type="Script" id=2]
-
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://Assets/Raleway-Italic.ttf"
-
-[sub_resource type="DynamicFont" id=2]
-font_data = SubResource( 1 )
+[ext_resource path="res://Assets/RegularFont.tres" type="DynamicFont" id=3]
 
 [node name="Dialogue" type="Control"]
 anchor_right = 1.0
@@ -17,8 +12,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Character1" type="TextureRect" parent="."]
+margin_right = 640.0
+margin_bottom = 720.0
+expand = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Character2" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 640.0
+margin_right = 640.0
+rect_scale = Vector2( -1, 1 )
+expand = true
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="ColorRect" type="ColorRect" parent="."]
-show_behind_parent = true
 anchor_left = 0.178125
 anchor_top = 0.736389
 anchor_right = 0.821094
@@ -37,6 +52,8 @@ margin_top = 15.0
 margin_right = -82.0
 margin_bottom = -127.0
 custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Speaker"
 text = "Speaker"
 scroll_active = false
 __meta__ = {
@@ -48,26 +65,31 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 82.0
 margin_top = 49.0
-margin_right = -82.0
-margin_bottom = -22.0
-custom_fonts/normal_font = SubResource( 2 )
-text = "Dialogue"
+margin_right = -82.0002
+margin_bottom = -36.9999
+custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Character1" type="TextureRect" parent="."]
-margin_right = 640.0
-margin_bottom = 720.0
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Character2" type="TextureRect" parent="."]
-anchor_left = 0.5
+[node name="ContinueLabel" type="Label" parent="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 82.0
+margin_top = 137.225
+margin_right = -82.0002
+margin_bottom = -10.7753
+custom_fonts/font = ExtResource( 3 )
+text = "Press J to continue..."
+align = 1
+valign = 1
 __meta__ = {
-"_edit_lock_": true
+"_edit_use_anchors_": false
 }
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.03
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
