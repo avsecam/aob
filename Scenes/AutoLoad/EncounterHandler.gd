@@ -24,6 +24,7 @@ func _ready():
 
 
 func _physics_process(_delta):
+	return
 	if stepsTilEncounter > 0 and steps >= stepsTilEncounter:
 		_set_encounter()
 

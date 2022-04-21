@@ -3,6 +3,13 @@ extends KinematicBody
 
 signal step()
 
+
+const FLOOR_NORMAL: Vector3 = Vector3.UP
+const FLOOR_MAX_ANGLE: float = deg2rad(15)
+const SNAP_DIRECTION: Vector3 = Vector3.DOWN
+const SNAP_LENGTH: float = 1.0
+const SNAP: Vector3 = SNAP_DIRECTION * SNAP_LENGTH # for move_and_slide_with_snap()
+
 var character: Hero
 
 var distanceTraveled: float = 0 # should reset to 0 when it reaches EncounterHandler.STEP_SIZE
@@ -39,10 +46,6 @@ func _get_input():
 		velocity += direction * (PlayerData.WALK_SPEED + 4)
 	else:
 		velocity += direction * (PlayerData.WALK_SPEED)
-	
-	# jump
-	if is_on_floor() and Input.is_action_just_pressed("ui_accept"):
-		velocity.y += PlayerData.JUMP_IMPULSE
 
 
 func _physics_process(delta):
@@ -60,7 +63,7 @@ func _physics_process(delta):
 	
 	# keep player on floor
 	velocity.y -= PlayerData.FALL_ACCELERATION * delta
-	velocity = move_and_slide(velocity, Vector3.UP)
+	velocity.y = move_and_slide_with_snap(velocity, SNAP, FLOOR_NORMAL, true, 4, FLOOR_MAX_ANGLE).y
 
 
 func _set_position_data():
