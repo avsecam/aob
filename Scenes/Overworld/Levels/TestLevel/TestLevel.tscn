@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Overworld/Levels/TestLevel/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Assets/Overworld/Levels/TestLevel/Material.material" type="Material" id=2]
 [ext_resource path="res://Assets/Overworld/Levels/TestLevel/Material_002.material" type="Material" id=3]
+[ext_resource path="res://Scenes/Character/NPC/NPC.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Floor -col"
@@ -131,7 +132,8 @@ surfaces/0 = {
 data = PoolVector3Array( 32.3977, -1, -32.7753, 32.7709, 8.7082, -32.7753, 32.3977, 8.7082, -32.7753, 32.3977, -1, -32.7753, 32.7709, -1, -32.7753, 32.7709, 8.7082, -32.7753, 32.7709, -1, -32.7753, 32.7709, 8.7082, 0.9674, 32.7709, 8.7082, -32.7753, 32.7709, -1, -32.7753, 32.7709, -1, 0.9674, 32.7709, 8.7082, 0.9674, 32.7709, -1, 0.9674, 32.3977, 8.7082, 0.9674, 32.7709, 8.7082, 0.9674, 32.7709, -1, 0.9674, 32.3977, -1, 0.9674, 32.3977, 8.7082, 0.9674, 32.3977, -1, 0.9674, 32.3977, 8.7082, -32.7753, 32.3977, 8.7082, 0.9674, 32.3977, -1, 0.9674, 32.3977, -1, -32.7753, 32.3977, 8.7082, -32.7753, 32.7709, -1, -32.7753, 32.3977, -1, 0.9674, 32.7709, -1, 0.9674, 32.7709, -1, -32.7753, 32.3977, -1, -32.7753, 32.3977, -1, 0.9674, 32.7709, 8.7082, 0.9674, 32.3977, 8.7082, -32.7753, 32.7709, 8.7082, -32.7753, 32.7709, 8.7082, 0.9674, 32.3977, 8.7082, 0.9674, 32.3977, 8.7082, -32.7753 )
 
 [node name="World" type="Spatial"]
-transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0 )
+
+[node name="NPC" parent="." instance=ExtResource( 4 )]
 
 [node name="Floor " type="MeshInstance" parent="."]
 mesh = SubResource( 1 )

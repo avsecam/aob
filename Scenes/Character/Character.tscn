@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Character/Placeholder/Placeholder8.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Character/Placeholder/Placeholder4.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Character/Placeholder/Placeholder3.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Character/Placeholder/Placeholder6.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Character/Character.gd" type="Script" id=9]
+[ext_resource path="res://Scenes/Character/OverworldCharacterCollisionShape.tres" type="Shape" id=10]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -18,11 +19,16 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="Character" type="Spatial"]
+[node name="Character" type="KinematicBody"]
 script = ExtResource( 9 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+shape = ExtResource( 10 )
 
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 3, 0 )
 billboard = 2
 frames = SubResource( 1 )
+frame = 3
 playing = true

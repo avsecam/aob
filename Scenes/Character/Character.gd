@@ -1,4 +1,5 @@
 extends Spatial
+class_name Character
 
 
 onready var sprite: AnimatedSprite3D = $Sprite

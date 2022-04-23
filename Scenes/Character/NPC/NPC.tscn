@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Character/Character.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Character/Placeholder/NPC.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Character/NPC/NPC.gd" type="Script" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="NPC" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+spriteFrames = SubResource( 1 )
+
+[node name="Sprite" parent="." index="1"]
+frame = 5

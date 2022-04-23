@@ -175,7 +175,8 @@ func _set_turn_order():
 	turnOrder = []
 	for character in characterPositions:
 		turnOrder.append(character)
-	turnOrder.sort_custom(SortBySpeed, "_sort_speed")
+	if !characterPositions.empty():
+		turnOrder.sort_custom(SortBySpeed, "_sort_speed")
 	currentCharacterPosition = turnOrder[0]
 
 
